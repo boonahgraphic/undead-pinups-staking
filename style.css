@@ -59,16 +59,16 @@ body {
 
 #staking-actions {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     height: calc(100vh - 150px); /* Adjust this value based on the top bar height */
+    margin-top: 100px; /* Adjust to position below the top bar */
 }
 
 .mirror {
     position: relative;
     width: 300px; /* Adjust based on mirror size */
     height: 400px; /* Adjust based on mirror size */
-    margin: 0 20px;
 }
 
 .stake-button {
