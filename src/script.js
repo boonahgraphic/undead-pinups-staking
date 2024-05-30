@@ -1,19 +1,75 @@
 import { WaxJS } from '@waxio/waxjs/dist';
 
-console.log('Script is loaded'); // Initial log message
+console.log('Script is loaded');
 
 const wax = new WaxJS({ rpcEndpoint: 'https://wax.greymass.com' });
 let userAccount;
 
 document.getElementById('login-wax').addEventListener('click', async () => {
-    console.log('Login button clicked'); // Log message to verify click
+    console.log('Login button clicked');
     try {
         userAccount = await wax.login();
         console.log('Logged in as:', userAccount);
+        displayUserInfo(userAccount);
     } catch (e) {
         console.error('Login failed:', e);
     }
 });
+
+document.getElementById('logout-button').addEventListener('click', () => {
+    console.log('Logout button clicked');
+    userAccount = null;
+    hideUserInfo();
+});
+
+function displayUserInfo(account) {
+    document.getElementById('wallet-address').textContent = account;
+    document.getElementById('user-info').style.display = 'block';
+    document.getElementById('logout-button').style.display = 'block';
+    document.getElementById('wallet-login').style.display = 'none';
+    document.getElementById('staking-actions').style.display = 'block';
+    updateBalances(account);
+}
+
+function hideUserInfo() {
+    document.getElementById('user-info').style.display = 'none';
+    document.getElementById('logout-button').style.display = 'none';
+    document.getElementById('wallet-login').style.display = 'block';
+    document.getElementById('staking-actions').style.display = 'none';
+}
+
+async function updateBalances(account) {
+    try {
+        const response = await fetch(`https://wax.greymass.com/v1/chain/get_currency_balance`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                code: 'eosio.token',
+                account: account,
+                symbol: 'WAX',
+            }),
+        });
+        const balance = await response.json();
+        document.getElementById('wax-amount').textContent = balance[0] || '0 WAX';
+
+        // Assuming there's an endpoint or method to get WYNX balance
+        const wynxResponse = await fetch(`https://your-wynx-api-endpoint`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                account: account,
+            }),
+        });
+        const wynxBalance = await wynxResponse.json();
+        document.getElementById('wynx-amount').textContent = wynxBalance.balance || '0 WYNX';
+    } catch (e) {
+        console.error('Failed to fetch balances:', e);
+    }
+}
 
 document.getElementById('stake-all').addEventListener('click', async () => {
     if (!userAccount) {

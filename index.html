@@ -7,16 +7,24 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="top-bar" style="background-color: black; color: white; padding: 10px; display: flex; justify-content: space-between; align-items: center;">
+        <div id="user-info" style="display: none;">
+            User: <span id="wallet-address"></span>
+            WAX: <span id="wax-amount"></span>
+            WYNX: <span id="wynx-amount"></span>
+        </div>
+        <button id="logout-button" style="display: none;">LOG OUT</button>
+    </div>
     <div id="wallet-login">
         <button id="login-wax">Login with WAX Wallet</button>
         <button id="login-anchor">Login with Anchor Wallet</button>
         <button id="login-wombat">Login with Wombat Wallet</button>
     </div>
-    <div id="staking-actions">
+    <div id="staking-actions" style="display: none;">
         <button id="stake-all">Stake All</button>
         <button id="claim-wynx">Claim WYNX</button>
         <button id="unstake-all">Unstake All</button>
     </div>
-    <script src="dist/bundle.js"></script>
+    <script type="module" src="dist/bundle.js"></script>
 </body>
 </html>
