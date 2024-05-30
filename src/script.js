@@ -24,8 +24,8 @@ document.getElementById('logout-button').addEventListener('click', () => {
 
 function displayUserInfo(account) {
     document.getElementById('wallet-address').textContent = account;
-    document.getElementById('user-info').style.display = 'block';
-    document.getElementById('logout-button').style.display = 'block';
+    document.getElementById('user-info').style.display = 'flex';
+    document.getElementById('logout-button').style.display = 'inline-block';
     document.getElementById('wallet-login').style.display = 'none';
     document.getElementById('staking-actions').style.display = 'block';
     updateBalances(account);
@@ -52,7 +52,7 @@ async function updateBalances(account) {
             }),
         });
         const balance = await response.json();
-        document.getElementById('wax-amount').textContent = balance[0] || '0 WAX';
+        document.getElementById('wax-amount').textContent = balance[0] || '0.0000 WAX';
 
         // Assuming there's an endpoint or method to get WYNX balance
         const wynxResponse = await fetch(`https://your-wynx-api-endpoint`, {
@@ -65,7 +65,7 @@ async function updateBalances(account) {
             }),
         });
         const wynxBalance = await wynxResponse.json();
-        document.getElementById('wynx-amount').textContent = wynxBalance.balance || '0 WYNX';
+        document.getElementById('wynx-amount').textContent = wynxBalance.balance || '0.0000 WYNX';
     } catch (e) {
         console.error('Failed to fetch balances:', e);
     }
