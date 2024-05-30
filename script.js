@@ -1,5 +1,6 @@
-const wax = new waxjs.WaxJS({ rpcEndpoint: 'https://wax.greymass.com' });
+import { WaxJS } from '@waxio/waxjs/dist';
 
+const wax = new WaxJS({ rpcEndpoint: 'https://wax.greymass.com' });
 let userAccount;
 
 document.getElementById('login-wax').addEventListener('click', async () => {
@@ -95,3 +96,4 @@ document.getElementById('unstake-all').addEventListener('click', async () => {
         console.error('Unstake failed:', e);
     }
 });
+
