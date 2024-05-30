@@ -1,0 +1,16 @@
+{
+  "name": "undead-pinups-staking",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@waxio/waxjs": "^1.7.1",
+    "eosjs": "^22.1.0"
+  }
+}
