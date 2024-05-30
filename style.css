@@ -64,14 +64,24 @@ body {
     height: calc(100vh - 150px); /* Adjust this value based on the top bar height */
 }
 
+.mirror {
+    position: relative;
+    width: 300px; /* Adjust based on mirror size */
+    height: 400px; /* Adjust based on mirror size */
+    margin: 0 20px;
+}
+
 .stake-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     font-family: 'M23_HYDRANT_SPECIAL', Arial, sans-serif;
     font-size: 2em;
     color: white;
     background-color: black;
     border: 2px solid white;
     padding: 10px 20px;
-    margin: 0 20px;
     cursor: pointer;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
 }
