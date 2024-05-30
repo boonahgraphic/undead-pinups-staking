@@ -1,13 +1,13 @@
 body {
     margin: 0;
     padding: 0;
-    background: url('path/to/your/background.jpg') no-repeat center center fixed;
+    background: url('https://path.to/your/background.jpg') no-repeat center center fixed;
     background-size: cover;
     font-family: Arial, sans-serif;
 }
 
 #top-bar {
-    position: absolute;
+    position: fixed;
     top: 0;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.7);
