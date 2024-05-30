@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'M23_HYDRANT_SPECIAL';
+    src: url('fonts/m23.TTF') format('truetype');
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -47,7 +52,26 @@ body {
     cursor: pointer;
 }
 
-#wallet-login, #staking-actions {
-    margin-top: 100px; /* Ensure content is below the top bar */
+#wallet-login {
     text-align: center;
+    margin-top: 100px; /* Ensure content is below the top bar */
+}
+
+#staking-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 150px); /* Adjust this value based on the top bar height */
+}
+
+.stake-button {
+    font-family: 'M23_HYDRANT_SPECIAL', Arial, sans-serif;
+    font-size: 2em;
+    color: white;
+    background-color: black;
+    border: 2px solid white;
+    padding: 10px 20px;
+    margin: 0 20px;
+    cursor: pointer;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
 }
