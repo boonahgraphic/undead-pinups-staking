@@ -59,14 +59,13 @@ body {
 
 #staking-actions {
     display: flex;
-    justify-content: center;
+    justify-content: space-around; /* Distribute buttons evenly across the container */
     align-items: center;
-    flex-direction: column; /* Stack buttons vertically */
     margin-top: 100px; /* Ensure content is below the top bar */
+    width: 100%;
 }
 
 .stake-button {
-    margin: 20px 0; /* Add space between buttons */
     font-family: 'M23_HYDRANT_SPECIAL', Arial, sans-serif;
     font-size: 2em;
     color: white;
