@@ -4,28 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Undead Pinups Staking</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="top-bar">
-        <img src="https://cyan-worthy-woodpecker-52.mypinata.cloud/ipfs/QmWs4UyxGZaux6vqkv56GSWnzQoFhQG6MBV2Xw1yVkNpbp" alt="Undead Pinups Logo" id="logo">
-        <div id="user-info">
-            <span id="user-account">User:</span>
-            <span id="wax-balance">WAX: 0.0000</span>
-            <span id="wynx-balance">WYNX: 0.0000</span>
-            <button id="logout-button" onclick="logout()">LOG OUT</button>
+        <img src="https://cyan-worthy-woodpecker-52.mypinata.cloud/ipfs/QmWs4UyxGZaux6vqkv56GSWnzQoFhQG6MBV2Xw1yVkNpbp" id="logo" alt="Logo">
+        <div id="user-info" style="display: none;">
+            User: <span id="wallet-address"></span>
+            <span class="balance">WAX: <img src="https://cyan-worthy-woodpecker-52.mypinata.cloud/ipfs/QmXpAJaiDwXewpLkxX52nK7nHtVXPbznaX68gM5C7J5UHJ" alt="WAX Logo" class="icon"> <span id="wax-amount">0.0000</span></span>
+            <span class="balance">WYNX: <img src="https://cyan-worthy-woodpecker-52.mypinata.cloud/ipfs/QmaRgiC4VVMVrhAa6JV9pKRiTv2TGy97rRxm53UBzgfR1A" alt="WYNX Logo" class="icon"> <span id="wynx-amount">0.0000</span></span>
+            <button id="logout-button">LOG OUT</button>
         </div>
     </div>
     <div id="wallet-login">
-        <button id="loginWithWAX" class="login-button">Login with WAX Wallet</button>
-        <button class="login-button" onclick="loginWithAnchor()">Login with Anchor Wallet</button>
-        <button class="login-button" onclick="loginWithWombat()">Login with Wombat Wallet</button>
+        <button id="login-wax">Login with WAX Wallet</button>
+        <button id="login-anchor">Login with Anchor Wallet</button>
+        <button id="login-wombat">Login with Wombat Wallet</button>
     </div>
-    <div id="staking-actions" class="hidden">
-        <button class="stake-button" onclick="stakeAll()">Stake All</button>
-        <button class="stake-button" onclick="claimWYNX()">Claim Your WYNX</button>
-        <button class="stake-button" onclick="unstakeAll()">Unstake All</button>
+    <div id="staking-actions" style="display: none;">
+        <div class="mirror">
+            <button id="stake-all" class="stake-button">Stake All</button>
+        </div>
+        <div class="mirror">
+            <button id="claim-wynx" class="stake-button">Claim Your WYNX</button>
+        </div>
+        <div class="mirror">
+            <button id="unstake-all" class="stake-button">Unstake All</button>
+        </div>
     </div>
-    <script src="script.js"></script>
+    <script type="module" src="dist/bundle.js"></script>
 </body>
 </html>
