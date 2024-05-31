@@ -1,95 +1,157 @@
-// src/script.js
+import { WaxJS } from '@waxio/waxjs/dist';
 
-// Function to save wallet session to local storage
-function saveSession(walletAddress) {
-    localStorage.setItem('walletAddress', walletAddress);
-}
+console.log('Script is loaded');
 
-// Function to load wallet session from local storage
-function loadSession() {
-    return localStorage.getItem('walletAddress');
-}
+const wax = new WaxJS({ rpcEndpoint: 'https://wax.greymass.com' });
+let userAccount;
 
-// Function to check if a user is logged in
-function checkLogin() {
-    const walletAddress = loadSession();
-    if (walletAddress) {
-        document.getElementById('wallet-address').textContent = walletAddress;
-        document.getElementById('user-info').style.display = 'block';
-        document.getElementById('wallet-login').style.display = 'none';
-        getWynxBalance(walletAddress);
-        document.getElementById('staking-actions').style.display = 'flex';
-    }
-}
-
-// Function to log in with WAX wallet
-async function loginWithWax() {
-    const wax = new waxjs.WaxJS({
-        rpcEndpoint: 'https://wax.greymass.com'
-    });
+document.getElementById('login-wax').addEventListener('click', async () => {
+    console.log('Login button clicked');
     try {
-        const userAccount = await wax.login();
-        saveSession(userAccount);
-        checkLogin();
-    } catch (error) {
-        console.error('Failed to log in:', error);
+        userAccount = await wax.login();
+        console.log('Logged in as:', userAccount);
+        displayUserInfo(userAccount);
+    } catch (e) {
+        console.error('Login failed:', e);
     }
-}
+});
 
-document.getElementById('login-wax').addEventListener('click', loginWithWax);
-document.getElementById('login-anchor').addEventListener('click', loginWithWax); // Adjust if different logic
-document.getElementById('login-wombat').addEventListener('click', loginWithWax); // Adjust if different logic
 document.getElementById('logout-button').addEventListener('click', () => {
-    localStorage.removeItem('walletAddress');
-    location.reload();
+    console.log('Logout button clicked');
+    userAccount = null;
+    hideUserInfo();
 });
 
-checkLogin();
+function displayUserInfo(account) {
+    document.getElementById('wallet-address').textContent = account;
+    document.getElementById('user-info').style.display = 'flex';
+    document.getElementById('logout-button').style.display = 'inline-block';
+    document.getElementById('wallet-login').style.display = 'none';
+    document.getElementById('staking-actions').style.display = 'block';
+    updateBalances(account);
+}
 
-async function getWynxBalance(walletAddress) {
+function hideUserInfo() {
+    document.getElementById('user-info').style.display = 'none';
+    document.getElementById('logout-button').style.display = 'none';
+    document.getElementById('wallet-login').style.display = 'block';
+    document.getElementById('staking-actions').style.display = 'none';
+}
+
+async function updateBalances(account) {
     try {
-        const response = await fetch(`https://api.wax.alohaeos.com/v2/state/get_tokens?account=${walletAddress}`);
-        const data = await response.json();
-        const wynxToken = data.tokens.find(token => token.symbol === 'WYNX' && token.contract === 'wynxcbyte.gm');
-        document.getElementById('wynx-amount').textContent = wynxToken ? wynxToken.amount : '0.0000';
-    } catch (error) {
-        console.error('Error fetching WYNX balance:', error);
+        const response = await fetch(`https://wax.greymass.com/v1/chain/get_currency_balance`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                code: 'eosio.token',
+                account: account,
+                symbol: 'WAX',
+            }),
+        });
+        const balance = await response.json();
+        document.getElementById('wax-amount').textContent = balance[0] || '0.0000 WAX';
+
+        // Assuming there's an endpoint or method to get WYNX balance
+        const wynxResponse = await fetch(`https://your-wynx-api-endpoint`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                account: account,
+            }),
+        });
+        const wynxBalance = await wynxResponse.json();
+        document.getElementById('wynx-amount').textContent = wynxBalance.balance || '0.0000 WYNX';
+    } catch (e) {
+        console.error('Failed to fetch balances:', e);
     }
 }
 
-const templates = {
-    '798962': 10,
-    '798911': 10,
-    '798910': 10,
-    '798909': 10,
-    '798908': 10,
-    '798907': 10,
-    '798906': 10,
-    '798905': 10,
-    '798904': 10,
-    '798903': 10,
-    '292466': 50,
-    '290824': 30,
-    '289964': 20,
-    '289133': 10,
-};
-
-async function stakeTemplate(templateId, walletAddress) {
-    const amount = templates[templateId];
-    // Implement your staking logic here, e.g., interact with the blockchain
-    // Transfer WYNX from wynxcbyte.gm to the user's wallet address
-    console.log(`Staking ${amount} WYNX for template ${templateId} to ${walletAddress}`);
-}
-
-document.getElementById('stake-all').addEventListener('click', () => {
-    const walletAddress = loadSession();
-    if (walletAddress) {
-        Object.keys(templates).forEach(templateId => {
-            stakeTemplate(templateId, walletAddress);
+document.getElementById('stake-all').addEventListener('click', async () => {
+    if (!userAccount) {
+        alert('Please login first');
+        return;
+    }
+    try {
+        const result = await wax.api.transact({
+            actions: [{
+                account: 'yourcontract', // Replace with your contract account
+                name: 'stake',
+                authorization: [{
+                    actor: userAccount,
+                    permission: 'active',
+                }],
+                data: {
+                    user: userAccount,
+                    template_ids: [798962, 798911, 798907, 798908, 798909, 798910, 798906, 798905, 798904, 798903],
+                },
+            }]
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 30,
         });
-    } else {
-        alert('Please log in first');
+        console.log('Stake successful:', result);
+    } catch (e) {
+        console.error('Stake failed:', e);
     }
 });
 
-// Similarly handle claim and unstake actions
+document.getElementById('claim-wynx').addEventListener('click', async () => {
+    if (!userAccount) {
+        alert('Please login first');
+        return;
+    }
+    try {
+        const result = await wax.api.transact({
+            actions: [{
+                account: 'yourcontract', // Replace with your contract account
+                name: 'claim',
+                authorization: [{
+                    actor: userAccount,
+                    permission: 'active',
+                }],
+                data: {
+                    user: userAccount,
+                },
+            }]
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        });
+        console.log('Claim successful:', result);
+    } catch (e) {
+        console.error('Claim failed:', e);
+    }
+});
+
+document.getElementById('unstake-all').addEventListener('click', async () => {
+    if (!userAccount) {
+        alert('Please login first');
+        return;
+    }
+    try {
+        const result = await wax.api.transact({
+            actions: [{
+                account: 'yourcontract', // Replace with your contract account
+                name: 'unstake',
+                authorization: [{
+                    actor: userAccount,
+                    permission: 'active',
+                }],
+                data: {
+                    user: userAccount,
+                },
+            }]
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        });
+        console.log('Unstake successful:', result);
+    } catch (e) {
+        console.error('Unstake failed:', e);
+    }
+});

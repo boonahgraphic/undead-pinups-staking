@@ -1,16 +1,17 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
-    entry: './src/script.js',  // Update the path to point to the src directory
+    entry: './src/script.js',
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, 'public', 'dist'),
+        path: path.resolve(__dirname, 'dist'),
     },
     module: {
         rules: [
             {
-                test: /\.js$/,
-                exclude: /node_modules/,
+                test: /\.m?js$/,
+                exclude: /(node_modules|bower_components)/,
                 use: {
                     loader: 'babel-loader',
                     options: {
@@ -20,5 +21,16 @@ module.exports = {
             },
         ],
     },
-    mode: 'development',
+    resolve: {
+        fallback: {
+            buffer: require.resolve('buffer/'),
+            stream: require.resolve('stream-browserify'),
+            crypto: require.resolve('crypto-browserify'),
+        },
+    },
+    plugins: [
+        new webpack.ProvidePlugin({
+            Buffer: ['buffer', 'Buffer'],
+        }),
+    ],
 };
