@@ -1,9 +1,7 @@
-// webpack.config.js
-
 const path = require('path');
 
 module.exports = {
-    entry: './script.js',
+    entry: './src/script.js',  // Update the path to point to the src directory
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'public', 'dist'),

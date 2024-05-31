@@ -1,4 +1,4 @@
-// script.js
+// src/script.js
 
 // Function to save wallet session to local storage
 function saveSession(walletAddress) {
