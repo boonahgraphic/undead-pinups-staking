@@ -1,17 +1,18 @@
+// webpack.config.js
+
 const path = require('path');
-const webpack = require('webpack');
 
 module.exports = {
-    entry: './src/script.js',
+    entry: './script.js',
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'public', 'dist'),
     },
     module: {
         rules: [
             {
-                test: /\.m?js$/,
-                exclude: /(node_modules|bower_components)/,
+                test: /\.js$/,
+                exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
                     options: {
@@ -21,16 +22,5 @@ module.exports = {
             },
         ],
     },
-    resolve: {
-        fallback: {
-            buffer: require.resolve('buffer/'),
-            stream: require.resolve('stream-browserify'),
-            crypto: require.resolve('crypto-browserify'),
-        },
-    },
-    plugins: [
-        new webpack.ProvidePlugin({
-            Buffer: ['buffer', 'Buffer'],
-        }),
-    ],
+    mode: 'development',
 };

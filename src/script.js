@@ -18,15 +18,22 @@ function checkLogin() {
         document.getElementById('user-info').style.display = 'block';
         document.getElementById('wallet-login').style.display = 'none';
         getWynxBalance(walletAddress);
+        document.getElementById('staking-actions').style.display = 'flex';
     }
 }
 
 // Function to log in with WAX wallet
 async function loginWithWax() {
-    // Your login logic here
-    const walletAddress = 'user_wallet_address'; // Replace with actual login logic
-    saveSession(walletAddress);
-    checkLogin();
+    const wax = new waxjs.WaxJS({
+        rpcEndpoint: 'https://wax.greymass.com'
+    });
+    try {
+        const userAccount = await wax.login();
+        saveSession(userAccount);
+        checkLogin();
+    } catch (error) {
+        console.error('Failed to log in:', error);
+    }
 }
 
 document.getElementById('login-wax').addEventListener('click', loginWithWax);
