@@ -20,15 +20,42 @@ async function login() {
 
         document.getElementById('wallet-login').classList.add('hidden');
         document.getElementById('staking-actions').classList.remove('hidden');
+
+        localStorage.setItem('userAccount', userAccount);
+        localStorage.setItem('userBalance', userBalance);
+        localStorage.setItem('wynxBalance', wynxBalance);
     } catch (e) {
         console.error('Login failed:', e);
     }
 }
 
 function logout() {
-    // Implementation of logout functionality
+    localStorage.removeItem('userAccount');
+    localStorage.removeItem('userBalance');
+    localStorage.removeItem('wynxBalance');
     document.getElementById('wallet-login').classList.remove('hidden');
     document.getElementById('staking-actions').classList.add('hidden');
+    document.getElementById('user-account').textContent = 'User:';
+    document.getElementById('wax-balance').textContent = 'WAX: 0.0000';
+    document.getElementById('wynx-balance').textContent = 'WYNX: 0.0000';
 }
 
-document.getElementById('login-button').addEventListener('click', login);
+function checkLoginStatus() {
+    const userAccount = localStorage.getItem('userAccount');
+    const userBalance = localStorage.getItem('userBalance');
+    const wynxBalance = localStorage.getItem('wynxBalance');
+
+    if (userAccount) {
+        document.getElementById('user-account').textContent = `User: ${userAccount}`;
+        document.getElementById('wax-balance').textContent = `WAX: ${userBalance}`;
+        document.getElementById('wynx-balance').textContent = `WYNX: ${wynxBalance}`;
+
+        document.getElementById('wallet-login').classList.add('hidden');
+        document.getElementById('staking-actions').classList.remove('hidden');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    checkLoginStatus();
+    document.getElementById('login-button').addEventListener('click', login);
+});
