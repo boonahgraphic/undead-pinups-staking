@@ -3,22 +3,25 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-  "dependencies": {
-    "@waxio/waxjs": "^1.0.0",
-    "eosjs": "^22.0.0",
-    "express": "^4.17.1"
-  },
   "scripts": {
     "start": "node server.js",
     "build": "webpack --mode development"
   },
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "@waxio/waxjs": "^1.0.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "eosjs": "^22.0.0",
+    "express": "^4.17.1",
+    "stream-browserify": "^3.0.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.24.6",
     "@babel/preset-env": "^7.24.6",
     "babel-loader": "^8.2.2",
     "webpack": "^5.91.0",
-    "webpack-cli": "^4.10.0"
+    "webpack-cli": "^5.1.4"
   }
 }
