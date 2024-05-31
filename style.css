@@ -59,10 +59,10 @@ body {
 
 #staking-actions {
     display: flex;
-    justify-content: space-around; /* Distribute buttons evenly across the container */
+    justify-content: center; /* Center the buttons */
     align-items: center;
     margin-top: 100px; /* Ensure content is below the top bar */
-    width: 100%;
+    gap: 20px; /* Add space between buttons */
 }
 
 .stake-button {
